@@ -1,0 +1,10 @@
+CREATE DATABASE shared
+GO
+
+USE [shared]
+
+CREATE TABLE dbo.Customers(
+  Id int IDENTITY(1, 1) NOT NULL PRIMARY KEY CLUSTERED,
+  Name nvarchar(50) NOT NULL
+)
+GO

@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    environment:
+      SA_PASSWORD: P@55w0rd
+      ACCEPT_EULA: Y
+    ports:
+      - 14331:1433
+    volumes:
+      - ./mssql/log1:/var/opt/mssql/log
+      - mssql-db1:/var/opt/mssql/data
+      - ./db/init-data:/init-data
+      - ./db/start-up.sh:/start-up.sh
+    command: "sh -c '/start-up.sh & /opt/mssql/bin/sqlservr;'"
+  linked-db:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    environment:
+      SA_PASSWORD: P@55w0rd
+      ACCEPT_EULA: Y
+    ports:
+      - 14332:1433
+    volumes:
+      - ./mssql/log2:/var/opt/mssql/log
+      - mssql-db2:/var/opt/mssql/data
+      - ./linked-db/init-data:/init-data
+      - ./linked-db/start-up.sh:/start-up.sh
+    command: "sh -c '/start-up.sh & /opt/mssql/bin/sqlservr;'"
+
+volumes:
+  mssql-db1:
+    driver: local
+  mssql-db2:
+    driver: local
